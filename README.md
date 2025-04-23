@@ -6,4 +6,4 @@ In order it was made:
 - 0 : [Libft](0_Libft)
 - 1.1 : [ft_printf](1.1_ft_printf)
 - 1.2 : [get_next_line](1.2_get_next_line)
-- 2.1 : [Push_swap](2.1_Push_swap)
+- 2.1 : [Push_swap](2.1_Push_Swap)
