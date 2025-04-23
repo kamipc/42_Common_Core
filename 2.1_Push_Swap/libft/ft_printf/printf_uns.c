@@ -9,7 +9,7 @@
 /*   Updated: 2024-12-12 12:07:44 by cpinho-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_printf.h"
 
 static void	prt_nbr(unsigned int n);
 

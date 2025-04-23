@@ -9,7 +9,7 @@
 /*   Updated: 2024-12-12 12:05:48 by cpinho-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_printf.h"
 
 int	printf_digits(int n)
 {

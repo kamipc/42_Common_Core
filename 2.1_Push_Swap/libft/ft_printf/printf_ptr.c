@@ -9,7 +9,7 @@
 /*   Updated: 2024-12-11 15:22:58 by cpinho-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_printf.h"
 
 static int	prnt_ptr(unsigned long p, char *hex);
 
