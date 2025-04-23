@@ -59,7 +59,12 @@ int	main(int ac, char **av)
 	t_list	*a;
 
 	if (ac < 2 || (ac == 2 && !av[1][0]))
-		error();
+	{
+		if (ac < 2)
+			exit(0);
+		else
+			error();
+	}
 	else if (ac == 2)
 	{
 		a = initstack_a(splitargs(av[1]), 0);
