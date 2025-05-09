@@ -16,4 +16,5 @@ Your function now should be able to read multiple file descriptors at the same t
 
 ### Final Grade
 
-![image](https://github.com/user-attachments/assets/f2ca902e-8618-4023-971c-ce112a73cb8f)
+![image](https://github.com/user-attachments/assets/0d16b257-ef26-463b-a875-5797de8a112d)
+
