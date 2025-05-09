@@ -70,4 +70,5 @@ The functions to implement are:
 
 ### Final Grade
 
-![image](https://github.com/user-attachments/assets/c0d23ba5-7a1a-4415-ac77-e10ae47253b0)
+![image](https://github.com/user-attachments/assets/e98b8811-1ffd-4919-8c29-5b8975f7edd2)
+
