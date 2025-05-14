@@ -31,10 +31,10 @@ char	*find_truepath(char *cmd, char *fullpath)
 	char	*truepath;
 	char	*temp;
 	int		i;
-	
+
 	splitpath = ft_split(fullpath, ':');
 	i = 0;
-	while (splitpath[i])
+	while (splitpath[i] && (cmd && cmd[0] != '\0'))
 	{
 		truepath = ft_strjoin(splitpath[i], "/");
 		temp = truepath;
@@ -49,8 +49,8 @@ char	*find_truepath(char *cmd, char *fullpath)
 		i++;
 	}
 	free_split(splitpath);
-	call_error(3);
-	exit(1);
+	perror("Command not found");
+	return (NULL);
 }
 
 void	exec_cmd1(t_list *cmd_info, int pipe_fd[2], char *envp[])
@@ -59,34 +59,51 @@ void	exec_cmd1(t_list *cmd_info, int pipe_fd[2], char *envp[])
 
 	if (fork() == 0)
 	{
-		in_fd = open(cmd_info->infile, O_RDONLY);
-		if(in_fd == 1)
-			call_error(5);
 		close(pipe_fd[0]);
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
+		in_fd = open(cmd_info->infile, O_RDONLY);
+		if (in_fd == -1)
+		{
+			perror("Failed to read infile");
+			free_struct(cmd_info);
+			exit(1);
+		}
 		dup2(in_fd, STDIN_FILENO);
 		close(in_fd);
-		execve(cmd_info->cmd1path, cmd_info->cmd1, envp);
-		call_error(6);
+		if (cmd_info->cmd1path && cmd_info->cmd1)
+			execve(cmd_info->cmd1path, cmd_info->cmd1, envp);
+		perror("Failed to execute first command");
+		free_struct(cmd_info);
+		exit(1);
 	}
 }
 
-void	exec_cmd2(t_list *cmd_info, int pipe_fd[2], char *envp[])
+pid_t	exec_cmd2(t_list *cmd_info, int pipe_fd[2], char *envp[])
 {
 	int		out_fd;
+	pid_t	pid;
 
-	if (fork() == 0)
+	pid = fork();
+	if (pid == 0)
 	{
 		close(pipe_fd[1]);
 		dup2(pipe_fd[0], STDIN_FILENO);
 		close(pipe_fd[0]);
 		out_fd = open(cmd_info->outfile, O_WRONLY | O_TRUNC);
-		if(out_fd == -1)
-			call_error(7);
+		if (out_fd == -1)
+		{
+			perror("Failed to open outfile");
+			free_struct(cmd_info);
+			exit(1);
+		}
 		dup2(out_fd, STDOUT_FILENO);
 		close(out_fd);
-		execve(cmd_info->cmd2path, cmd_info->cmd2, envp);
-		call_error(8);
+		if (cmd_info->cmd2path && cmd_info->cmd2)
+			execve(cmd_info->cmd2path, cmd_info->cmd2, envp);
+		perror("Failed to execute second command");
+		free_struct(cmd_info);
+		exit(127);
 	}
+	return (pid);
 }

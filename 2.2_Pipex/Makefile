@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cpinho-c <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: cpinho-c <cpinho-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/05/06 14:26:36 by cpinho-c          #+#    #+#              #
-#    Updated: 2025/05/06 14:26:40 by cpinho-c         ###   ########.fr        #
+#    Created: 2025/05/14 14:25:30 by cpinho-c          #+#    #+#              #
+#    Updated: 2025/05/14 14:25:35 by cpinho-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Werror -Wextra
 SRCS = pipex.c utils/checks.c utils/tasks.c
 OBJS = $(SRCS:.c=.o)
@@ -23,7 +23,7 @@ LIBFT = libft/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) -g $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
+	$(CC) -g -O0 $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
 
 $(LIBFT):
 	$(MAKE) -C libft

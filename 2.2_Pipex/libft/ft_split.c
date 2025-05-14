@@ -22,6 +22,8 @@ char	**ft_split(char const *s, char c)
 	size_t	i;
 	size_t	j;
 
+	if (!s)
+		return (NULL);
 	total_words = check_all_words(s, c);
 	split_array = (char **) malloc ((total_words + 1) * sizeof(char *));
 	if (split_array == NULL)

@@ -11,22 +11,47 @@
 /* ************************************************************************** */
 #include "../pipex.h"
 
-void	check_valid_files(char *infile, char *outfile)
+char	*check_truecmd(char *cmd)
+{
+	int		i;
+	char	*temp;
+
+	if (!cmd || cmd[0] == '\0')
+		return (NULL);
+	i = ft_strlen(cmd);
+	while (i > 0 && cmd[--i])
+	{
+		if (cmd[i] == '/')
+		{
+			temp = ft_substr(cmd, i + 1, ft_strlen(cmd));
+			free(cmd);
+			return (temp);
+		}
+	}
+	return (cmd);
+}
+
+bool	check_outfile_exists(char *outfile)
 {
 	int	fd;
-	if (access(infile, F_OK) != 0 || access(infile, R_OK) != 0)
-		call_error(0);
+
 	if (access(outfile, F_OK) != 0)
 	{
-		fd = open(outfile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		fd = open(outfile, O_WRONLY | O_CREAT,
+				S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 		if (fd == -1)
-			call_error(9);
+		{
+			perror("Failed to create outfile");
+			return (false);
+		}
 		else
+		{
 			close(fd);
+		}
 	}
-	if (access(outfile, W_OK) != 0)
-		call_error(1);
+	return (true);
 }
+
 void	free_split(char **splitpath)
 {
 	int	i;
@@ -61,29 +86,4 @@ void	free_struct(t_list *cmd_info)
 	free(cmd_info->cmd1path);
 	free(cmd_info->cmd2path);
 	free(cmd_info);
-}
-
-void	call_error(int type)
-{
-	if (type == 0)
-		perror("infile does not exist/is not readable");
-	if (type == 1)
-		perror("no write permission on outfile");
-	if (type == 2)
-		perror("Failed to create struct");
-	if (type == 3)
-		perror("Command not found");
-	if (type == 4)
-		perror("Failed to create pipe");
-	if (type == 5)
-		perror("Failed to open infile");
-	if (type == 6)
-		perror("Failed to execute first command");
-	if (type == 7)
-		perror("Failed to open outfile");
-	if (type == 8)
-		perror("Failed to execute second command");
-	if (type == 9)
-		perror("Failed to create outfile");
-	exit (1);
 }
