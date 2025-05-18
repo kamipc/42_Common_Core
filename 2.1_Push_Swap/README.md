@@ -18,3 +18,4 @@ Those instructions are:
 - `rrb` or `reverse rotate b`: Shift down all elements of stack **b**, the last element becomes the first.
 - `rrr`: **rra** and **rrb** at the same time.
 
+![image](https://github.com/user-attachments/assets/a219e723-6778-47f1-85cb-d5b4aec308ee)
