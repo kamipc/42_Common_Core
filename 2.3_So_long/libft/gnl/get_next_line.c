@@ -11,8 +11,77 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-static char	*read_file(int fd, char *buffer, char *stash);
-static char	*get_line(char **stash);
+static char	*read_file(int fd, char *buffer, char *stash)
+{
+	int		bytes_read;
+	char	*temp;
+
+	bytes_read = 1;
+	while (bytes_read > 0 && !(ft_strchr(stash, '\n')))
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read < 0)
+		{
+			free(stash);
+			return (NULL);
+		}
+		buffer[bytes_read] = '\0';
+		if (stash == NULL)
+			stash = ft_strdup(buffer);
+		else
+		{
+			temp = ft_strjoin(stash, buffer);
+			free(stash);
+			stash = temp;
+		}
+	}
+	return (stash);
+}
+
+static char	*cp_line(char **stash, int *i)
+{
+	char	*temp;
+	char	*line;
+	size_t	r_len;
+
+	r_len = ft_strlen(*stash) - (*i + 1);
+	line = ft_substr(*stash, 0, *i + 1);
+	if (r_len == 0)
+	{
+		free(*stash);
+		*stash = NULL;
+	}
+	else
+	{
+		temp = ft_substr(*stash, *i + 1, r_len);
+		free(*stash);
+		*stash = temp;
+	}
+	return (line);
+}
+
+static char	*get_line(char **stash)
+{
+	int		i;
+	char	*line;
+
+	i = 0;
+	if (!*stash || **stash == '\0')
+		return (NULL);
+	while ((*stash)[i] && (*stash)[i] != '\n')
+		i++;
+	if (ft_strchr(*stash, '\n'))
+	{
+		line = cp_line(stash, &i);
+	}
+	else
+	{
+		line = ft_strdup(*stash);
+		free(*stash);
+		*stash = NULL;
+	}
+	return (line);
+}
 
 char	*get_next_line(int fd)
 {
@@ -38,59 +107,6 @@ char	*get_next_line(int fd)
 		free(stash);
 		stash = NULL;
 		return (NULL);
-	}
-	return (line);
-}
-
-static char	*read_file(int fd, char *buffer, char *stash)
-{
-	int		bytes_read;
-	char	*temp;
-
-	bytes_read = 1;
-	while (bytes_read > 0 && !(ft_strchr(stash, '\n')))
-	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read < 0)
-		{
-			free(stash);
-			return (NULL);
-		}
-		buffer[bytes_read] = '\0';
-		if (stash == NULL)
-			stash = ft_strdup(buffer);
-		else
-		{
-			temp = ft_strjoin(stash, buffer);
-			stash = temp;
-		}
-	}
-	return (stash);
-}
-
-static char	*get_line(char **stash)
-{
-	int		i;
-	char	*temp;
-	char	*line;
-
-	i = 0;
-	if (!*stash || **stash == '\0')
-		return (NULL);
-	while ((*stash)[i] && (*stash)[i] != '\n')
-		i++;
-	if (ft_strchr(*stash, '\n'))
-	{
-		temp = ft_substr(*stash, i + 1, ft_strlen(*stash));
-		line = ft_substr(*stash, 0, i + 1);
-		free(*stash);
-		*stash = temp;
-	}
-	else
-	{
-		line = ft_strdup(*stash);
-		free(*stash);
-		*stash = NULL;
 	}
 	return (line);
 }

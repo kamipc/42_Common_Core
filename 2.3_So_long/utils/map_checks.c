@@ -29,7 +29,7 @@ bool	wall_check(char **map)
 		{
 			j = 0;
 			while (map[i][j])
-			{	
+			{
 				if (map[i][j] != '1')
 					return (false);
 				j++;
@@ -50,12 +50,12 @@ bool	player_check(t_game *game)
 	i = 0;
 	player = 0;
 	init_p_c(game, 'P');
-	while (game->map[i])
+	while (game->map->map[i])
 	{
 		j = 0;
-		while (game->map[i][j])
+		while (game->map->map[i][j])
 		{
-			if (game->map[i][j] == 'P')
+			if (game->map->map[i][j] == 'P')
 			{
 				player++;
 				game->player->x = i;
@@ -69,6 +69,7 @@ bool	player_check(t_game *game)
 		return (false);
 	return (true);
 }
+
 bool	exit_check(char **map)
 {
 	int	i;
@@ -92,6 +93,7 @@ bool	exit_check(char **map)
 		return (false);
 	return (true);
 }
+
 bool	items_check(t_game *game)
 {
 	int	i;
@@ -100,12 +102,12 @@ bool	items_check(t_game *game)
 
 	i = 0;
 	items = 0;
-	while (game->map[i])
+	while (game->map->map[i])
 	{
 		j = 0;
-		while (game->map[i][j])
+		while (game->map->map[i][j])
 		{
-			if (game->map[i][j] == 'C')
+			if (game->map->map[i][j] == 'C')
 				items++;
 			j++;
 		}

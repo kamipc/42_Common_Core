@@ -19,47 +19,21 @@ void	fix_map(t_game *game)
 	int		s_len;
 
 	i = 0;
-	while (game->map[i])
+	while (game->map->map[i])
 	{
-		s_len = ft_strlen(game->map[i]);
-		if (game->map[i][s_len - 1] == '\n')
+		s_len = ft_strlen(game->map->map[i]);
+		if (game->map->map[i][s_len - 1] == '\n')
 		{
-			temp = (char *) malloc (s_len);
-			if (!temp)
-				call_error(0, game);
-			temp = game->map[i];
-			game->map[i] = ft_substr(temp, 0, s_len - 1);
+			temp = game->map->map[i];
+			game->map->map[i] = ft_substr(temp, 0, s_len - 1);
 			free(temp);
 		}
+		game->map->cpy_map[i] = ft_strdup(game->map->map[i]);
 		i++;
 	}
-}
-
-void	read_map(char *map_loc, t_game *game)
-{
-	int		map_fd;
-	char	*line;
-	int		i;
-
-	i = 0;
-	map_fd = open(map_loc, O_RDONLY);
-	if (map_fd == -1)
-		call_error(0, game);
-	while ((line = get_next_line(map_fd)) != NULL)
-	{
-		i++;
-		free(line);
-	}
-	close(map_fd);
-	game->map = (char **)malloc((i + 1) * (sizeof(char *)));
-	map_fd = open(map_loc, O_RDONLY);
-	if (map_fd == -1)
-		call_error(1, game);
-	i = 0;
-	while ((game->map[i] = get_next_line(map_fd))!= NULL)
-		i++;
-	game->map[i] = NULL;
-	close(map_fd);
+	game->map->cpy_map[i] = NULL;
+	game->map->max_row = i;
+	game->map->max_col = s_len;
 }
 
 void	save_items_loc(t_game *game)
@@ -71,12 +45,12 @@ void	save_items_loc(t_game *game)
 	i = 0;
 	k = 0;
 	init_p_c(game, 'C');
-	while (game->map[i])
+	while (game->map->map[i])
 	{
 		j = 0;
-		while (game->map[i][j])
+		while (game->map->map[i][j])
 		{
-			if (game->map[i][j] == 'C')
+			if (game->map->map[i][j] == 'C')
 			{
 				game->items[k].x = i;
 				game->items[k].y = j;
@@ -109,3 +83,33 @@ void	init_p_c(t_game *game, char c)
 		game->items = items;
 	}
 }
+
+t_game	*init_game(void)
+{
+	t_game	*game;
+
+	game = malloc(sizeof(t_game));
+	if (!game)
+	{
+		perror("Failed to create struct");
+		exit(1);
+	}
+	game->mlx_lib = NULL;
+	game->mlx_win = NULL;
+	game->map = NULL;
+	game->player = NULL;
+	game->items = NULL;
+	game->found_items = 0;
+	game->total_items = 0;
+	return (game);
+}
+
+// void	init_mlx(t_game *game)
+// {
+// 	game->mlx_lib = mlx_init();
+// 	if (!game->mlx_lib)
+// 	{
+// 		free_all(game);
+// 		exit(1);
+// 	}
+// }
