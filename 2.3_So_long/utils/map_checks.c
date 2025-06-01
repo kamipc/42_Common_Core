@@ -49,7 +49,7 @@ bool	player_check(t_game *game)
 
 	i = 0;
 	player = 0;
-	init_p_c(game, 'P');
+	init_player(game);
 	while (game->map->map[i])
 	{
 		j = 0;
@@ -116,7 +116,6 @@ bool	items_check(t_game *game)
 	if (items < 1)
 		return (false);
 	game->total_items = items;
-	save_items_loc(game);
 	return (true);
 }
 

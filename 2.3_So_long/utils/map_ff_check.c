@@ -31,8 +31,6 @@ bool	map_impossible(t_game *game)
 
 	flood_fill(game, game->player->x, game->player->y);
 	i = 0;
-	for (int i = 0; game->map->cpy_map[i]; i++)
-		ft_printf("%s\n", game->map->cpy_map[i]);
 	while (game->map->cpy_map[i])
 	{
 		if ((ft_strchr(game->map->cpy_map[i], 'C')) 
@@ -42,4 +40,28 @@ bool	map_impossible(t_game *game)
 		i++;
 	}
 	return(true);
+}
+
+void	fix_map(t_game *game)
+{
+	int		i;
+	char	*temp;
+	int		s_len;
+
+	i = 0;
+	while (game->map->map[i])
+	{
+		s_len = ft_strlen(game->map->map[i]);
+		if (game->map->map[i][s_len - 1] == '\n')
+		{
+			temp = game->map->map[i];
+			game->map->map[i] = ft_substr(temp, 0, s_len - 1);
+			free(temp);
+		}
+		game->map->cpy_map[i] = ft_strdup(game->map->map[i]);
+		i++;
+	}
+	game->map->cpy_map[i] = NULL;
+	game->map->max_row = i;
+	game->map->max_col = s_len - 1;
 }

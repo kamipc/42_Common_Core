@@ -17,19 +17,14 @@
 # include <stdio.h>
 # include <errno.h>
 # include <fcntl.h>
+# include "minilibx-linux/mlx.h"
+# include "minilibx-linux/mlx_int.h"
 
 typedef struct s_player
 {
 	int	x;
 	int	y;
 }				t_player;
-
-typedef struct s_items
-{
-	int		x;
-	int		y;
-	bool	found;
-}				t_items;
 
 typedef struct s_map
 {
@@ -39,23 +34,52 @@ typedef struct s_map
 	int		max_col;
 }				t_map;
 
+typedef struct s_imgs
+{
+	void	*bg;
+	void	*wall;
+	void	*p_left;
+	void	*p_up;
+	void	*p_right;
+	void	*p_down;
+	void	*exit_closed;
+	void	*exit_open;
+	void	*collec;
+	void	*p_on_exit;
+	int		h;
+	int		w;
+}				t_imgs;
+
 typedef struct s_game
 {
-	void		*mlx_lib;
+	void		*mlx;
 	void		*mlx_win;
 	t_player	*player;
-	t_items		*items;
 	int			total_items;
 	int			found_items;
 	t_map		*map;
+	t_imgs		*imgs;
+	int			move_count;
 }				t_game;
+
+//general
+void	read_map(char *map_loc, t_game *game);
+void	fix_map(t_game *game);
+void	render_map(t_game *game, char c);
+int		hook_handler(int keycode, t_game *game);
+void	render_player(t_game *game, char c, int x, int y);
+
+//movements
+void	move_left(t_game *game);
+void	move_up(t_game *game);
+void	move_right(t_game *game);
+void	move_down(t_game *game);
 
 //inits
 t_game	*init_game(void);
-void	init_p_c(t_game *game, char c);
-void	read_map(char *map_loc, t_game *game);
-void	save_items_loc(t_game *game);
-void	fix_map(t_game *game);
+void	init_player(t_game *game);
+void	init_mlx(t_game *game);
+void	init_imgs(t_game *game);
 
 // validade map
 void	validade_map_file(char	*map_loc);
@@ -66,10 +90,11 @@ bool	exit_check(char **map);
 bool	items_check(t_game *game);
 bool	map_is_ret_check(char **map);
 bool	map_impossible(t_game *game);
+void	flood_fill(t_game *game, int x, int y);
 
 //handle errors and frees
 void	call_error(int error_type, t_game *game);
 void	free_map(t_game *game);
-void	free_all(t_game *game);
+void	free_all(t_game *game, int status);
 
 #endif

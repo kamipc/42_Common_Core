@@ -14,17 +14,20 @@ NAME = so_long
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS = so_long.c utils/checks.c utils/errors.c utils/map_checks.c \
-	   utils/inits.c utils/map_ff_check.c 
+	   utils/inits.c utils/map_ff_check.c utils/hooks.c
 OBJS = $(SRCS:.c=.o)
 RM = rm -f
 LIBFT = libft/libft.a
+MINILIB = minilibx-linux/libmlx.a
+LIBS = -Lminilibx-linux -lmlx -lX11 -lXext
+INCLUDES = -Iminilibx-linux
 
 .Silent:
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
+$(NAME): $(OBJS) $(LIBFT) $(MINILIB)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBFT) $(LIBS)
 
 $(LIBFT):
 	$(MAKE) -C libft
