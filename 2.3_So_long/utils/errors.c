@@ -12,31 +12,9 @@
 
 #include "../so_long.h"
 
-void	call_error(int error_type, t_game *game)
+void	call_error(char *str, t_game *game)
 {
-	ft_printf("Error\n");
-	if (error_type == 0)
-		perror("Failed to open map file\n");
-	if (error_type == 2)
-		ft_printf("Map not fully surrounded by walls\n");
-	if (error_type == 3)
-		ft_printf("Invalid number of Exits on map\n");
-	if (error_type == 4)
-		ft_printf("Invalid number of Players on map\n");
-	if (error_type == 5)
-		ft_printf("There are no collectibles on the map\n");
-	if (error_type == 6)
-		ft_printf("Invalid map dimensions\n");
-	if (error_type == 7)
-		perror("Failed to allocate memory\n");
-	if (error_type == 1)
-		ft_printf("Map impossible to complete\n");
-	if (error_type == 8)
-		perror("Failed to load images\n");
-	if (error_type == 9)
-		perror("Failed to initialize minilibX\n");
-	if (error_type == 10)
-		ft_printf("Map has invalid characters \n");
+	ft_printf("%s", str);
 	free_all(game, 1);
 }
 

@@ -36,19 +36,19 @@ bool	invalid_char(char	**m)
 void	check_valid_map(t_game *game)
 {
 	if (wall_check(game->map->map) == false)
-		call_error(2, game);
+		call_error(ERROR_INV_WALL, game);
 	if (exit_check(game->map->map) == false)
-		call_error(3, game);
+		call_error(ERROR_INV_EXIT, game);
 	if (player_check(game) == false)
-		call_error(4, game);
+		call_error(ERROR_INV_P, game);
 	if (items_check(game) == false)
-		call_error(5, game);
+		call_error(ERROR_INV_COL, game);
 	if (map_is_ret_check(game->map->map) == false)
-		call_error(6, game);
+		call_error(ERROR_INV_DIM, game);
 	if (map_impossible(game) == false)
-		call_error(1, game);
+		call_error(ERROR_IMPOSS, game);
 	if (invalid_char(game->map->map) == false)
-		call_error(10, game);
+		call_error(ERROR_INV_CHAR, game);
 }
 
 void	save_map(char *map_loc, t_game *game)
@@ -58,7 +58,7 @@ void	save_map(char *map_loc, t_game *game)
 
 	map_fd = open(map_loc, O_RDONLY);
 	if (map_fd == -1)
-		call_error(0, game);
+		call_error(ERROR_OPEN_MAP, game);
 	i = 0;
 	game->map->map[i] = get_next_line(map_fd);
 	while (game->map->map[i] != NULL)
@@ -77,7 +77,7 @@ void	validade_map_file(char	*map_loc)
 	if (map_loc[len - 1] != 'r' || map_loc[len - 2] != 'e'
 		|| map_loc[len - 3] != 'b' || map_loc[len - 4] != '.')
 	{
-		ft_printf("Error\nInvalid Map extension\n");
+		ft_printf("%s", ERROR_INV_MAP_EXT);
 		exit(1);
 	}
 }
@@ -91,7 +91,7 @@ void	read_map(char *map_loc, t_game *game)
 	i = 0;
 	map_fd = open(map_loc, O_RDONLY);
 	if (map_fd == -1)
-		call_error(0, game);
+		call_error(ERROR_OPEN_MAP, game);
 	line = get_next_line(map_fd);
 	while (line != NULL)
 	{
@@ -102,7 +102,7 @@ void	read_map(char *map_loc, t_game *game)
 	close(map_fd);
 	game->map = malloc(sizeof(t_map));
 	if (!game->map)
-		call_error(7, game);
+		call_error(ERR0R_MALLOC, game);
 	game->map->map = (char **)malloc((i + 1) * (sizeof(char *)));
 	game->map->cpy_map = (char **)malloc((i + 1) * (sizeof(char *)));
 	save_map(map_loc, game);

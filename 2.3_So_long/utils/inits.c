@@ -18,7 +18,7 @@ void	init_player(t_game *game)
 
 	player = malloc(sizeof(t_player));
 	if (!player)
-		call_error(7, game);
+		call_error(ERR0R_MALLOC, game);
 	game->player = player;
 }
 
@@ -29,7 +29,7 @@ t_game	*init_game(void)
 	game = malloc(sizeof(t_game));
 	if (!game)
 	{
-		perror("Failed to create struct");
+		ft_printf("%s", ERROR_STRUCT);
 		exit(1);
 	}
 	game->mlx = NULL;
@@ -53,23 +53,23 @@ void	init_imgs(t_game *g)
 
 	i = malloc(sizeof(t_imgs));
 	if (!g)
-		call_error(7, g);
+		call_error(ERR0R_MALLOC, g);
 	i->h = g->map->max_row * 32;
 	i->w = g->map->max_col * 32;
-	i->bg = mlx_xpm_file_to_image(g->mlx, "assets/bg.xpm", &i->w, &i->h);
-	i->wall = mlx_xpm_file_to_image(g->mlx, "assets/wall.xpm", &i->w, &i->h);
-	i->p_s = mlx_xpm_file_to_image(g->mlx, "assets/p_S.xpm", &i->w, &i->h);
-	i->p_a = mlx_xpm_file_to_image(g->mlx, "assets/p_A.xpm", &i->w, &i->h);
-	i->p_d = mlx_xpm_file_to_image(g->mlx, "assets/p_D.xpm", &i->w, &i->h);
-	i->p_w = mlx_xpm_file_to_image(g->mlx, "assets/p_W.xpm", &i->w, &i->h);
-	i->item = mlx_xpm_file_to_image(g->mlx, "assets/item.xpm", &i->w, &i->h);
-	i->exitc = mlx_xpm_file_to_image(g->mlx, "assets/exitC.xpm", &i->w, &i->h);
-	i->exito = mlx_xpm_file_to_image(g->mlx, "assets/exitO.xpm", &i->w, &i->h);
-	i->pone = mlx_xpm_file_to_image(g->mlx, "assets/PonE.xpm", &i->w, &i->h);
+	i->bg = mlx_xpm_file_to_image(g->mlx, "textures/bg.xpm", &i->w, &i->h);
+	i->wall = mlx_xpm_file_to_image(g->mlx, "textures/wall.xpm", &i->w, &i->h);
+	i->p_s = mlx_xpm_file_to_image(g->mlx, "textures/p_S.xpm", &i->w, &i->h);
+	i->p_a = mlx_xpm_file_to_image(g->mlx, "textures/p_A.xpm", &i->w, &i->h);
+	i->p_d = mlx_xpm_file_to_image(g->mlx, "textures/p_D.xpm", &i->w, &i->h);
+	i->p_w = mlx_xpm_file_to_image(g->mlx, "textures/p_W.xpm", &i->w, &i->h);
+	i->item = mlx_xpm_file_to_image(g->mlx, "textures/item.xpm", &i->w, &i->h);
+	i->exitc = mlx_xpm_file_to_image(g->mlx, "textures/eC.xpm", &i->w, &i->h);
+	i->exito = mlx_xpm_file_to_image(g->mlx, "textures/eO.xpm", &i->w, &i->h);
+	i->pone = mlx_xpm_file_to_image(g->mlx, "textures/PonE.xpm", &i->w, &i->h);
 	if (!(i->bg) || !(i->item) || !(i->exitc) || !(i->exito)
 		|| !(i->p_s) || !(i->p_a) || !(i->p_d) || !(i->p_w)
 		|| !(i->wall) || !(i->pone))
-		call_error(8, g);
+		call_error(ERROR_IMG_LOAD, g);
 	g->imgs = i;
 }
 
@@ -98,7 +98,7 @@ void	init_mlx(t_game *game)
 {
 	game->mlx = mlx_init();
 	if (!game->mlx)
-		call_error(9, game);
+		call_error(ERROR_MLX, game);
 	init_imgs(game);
 	mlx_get_screen_size(game->mlx, &game->maxw, &game->maxh);
 	game->maxh -= 64;
@@ -118,6 +118,6 @@ void	init_mlx(t_game *game)
 		game->win = mlx_new_window(game->mlx, game->map->max_col * 32,
 				game->map->max_row * 32, "So_long");
 	if (!game->win)
-		call_error(9, game);
+		call_error(ERROR_MLX, game);
 	render_map(game, 'D');
 }

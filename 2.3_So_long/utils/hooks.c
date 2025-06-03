@@ -15,8 +15,6 @@ int	hook_handler(int keycode, t_game *game)
 {
 	if (keycode == 65307)
 		free_all(game, 0);
-	if (game->move_count == 0)
-		ft_printf("%i\n", game->move_count);
 	if (keycode == 97 || keycode == 65361)
 		move_left(game);
 	if (keycode == 119 || keycode == 65362)
@@ -33,7 +31,7 @@ void	move_left(t_game *g)
 	if (g->map->map[g->player->x][g->player->y - 1] != '1')
 	{
 		g->move_count++;
-		ft_printf("%i\n", g->move_count);
+		ft_printf("move counter:%i\n", g->move_count);
 		if (g->map->map[g->player->x][g->player->y] == 'X')
 			g->map->map[g->player->x][g->player->y] = 'E';
 		else
@@ -48,7 +46,7 @@ void	move_left(t_game *g)
 			g->map->map[g->player->x][g->player->y - 1] = 'X';
 		else if (g->map->map[g->player->x][g->player->y - 1] == 'E'
 			&& g->found_items == g->total_items)
-			free_all(g, 0);
+			finish_game(g);
 		else
 			g->map->map[g->player->x][g->player->y - 1] = 'P';
 		g->player->y -= 1;
@@ -61,7 +59,7 @@ void	move_up(t_game *g)
 	if (g->map->map[g->player->x - 1][g->player->y] != '1')
 	{
 		g->move_count++;
-		ft_printf("%i\n", g->move_count);
+		ft_printf("move counter:%i\n", g->move_count);
 		if (g->map->map[g->player->x][g->player->y] == 'X')
 			g->map->map[g->player->x][g->player->y] = 'E';
 		else
@@ -76,7 +74,7 @@ void	move_up(t_game *g)
 			g->map->map[g->player->x - 1][g->player->y] = 'X';
 		else if (g->map->map[g->player->x - 1][g->player->y] == 'E'
 			&& g->found_items == g->total_items)
-			free_all(g, 0);
+			finish_game(g);
 		else
 			g->map->map[g->player->x - 1][g->player->y] = 'P';
 		g->player->x -= 1;
@@ -89,7 +87,7 @@ void	move_right(t_game *g)
 	if (g->map->map[g->player->x][g->player->y + 1] != '1')
 	{
 		g->move_count++;
-		ft_printf("%i\n", g->move_count);
+		ft_printf("move counter:%i\n", g->move_count);
 		if (g->map->map[g->player->x][g->player->y] == 'X')
 			g->map->map[g->player->x][g->player->y] = 'E';
 		else
@@ -104,7 +102,7 @@ void	move_right(t_game *g)
 			g->map->map[g->player->x][g->player->y + 1] = 'X';
 		else if (g->map->map[g->player->x][g->player->y + 1] == 'E'
 			&& g->found_items == g->total_items)
-			free_all(g, 0);
+			finish_game(g);
 		else
 			g->map->map[g->player->x][g->player->y + 1] = 'P';
 		g->player->y += 1;
@@ -117,7 +115,7 @@ void	move_down(t_game *g)
 	if (g->map->map[g->player->x + 1][g->player->y] != '1')
 	{
 		g->move_count++;
-		ft_printf("%i\n", g->move_count);
+		ft_printf("move counter:%i\n", g->move_count);
 		if (g->map->map[g->player->x][g->player->y] == 'X')
 			g->map->map[g->player->x][g->player->y] = 'E';
 		else
@@ -132,7 +130,7 @@ void	move_down(t_game *g)
 			g->map->map[g->player->x + 1][g->player->y] = 'X';
 		else if (g->map->map[g->player->x + 1][g->player->y] == 'E'
 			&& g->found_items == g->total_items)
-			free_all(g, 0);
+			finish_game(g);
 		else
 			g->map->map[g->player->x + 1][g->player->y] = 'P';
 		g->player->x += 1;

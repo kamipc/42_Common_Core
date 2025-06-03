@@ -14,7 +14,7 @@ NAME = so_long
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS = so_long.c utils/checks.c utils/errors.c utils/map_checks.c \
-	   utils/inits.c utils/map_ff_check.c utils/hooks.c
+	   utils/inits.c utils/map_ff_check.c utils/hooks.c utils/render.c
 OBJS = $(SRCS:.c=.o)
 RM = rm -f
 LIBFT = libft/libft.a

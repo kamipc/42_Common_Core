@@ -20,6 +20,22 @@
 # include "minilibx-linux/mlx.h"
 # include "minilibx-linux/mlx_int.h"
 
+# define ERROR_INV_ARGS "Error\nInvalid argument(s)\n"
+# define ERR0R_MALLOC "Error\nFailed to allocate memory\n"
+# define ERROR_INV_MAP_EXT "Error\nInvalid Map extension\n"
+# define ERROR_STRUCT "Error\nFailed to create struct\n"
+# define ERROR_OPEN_MAP "Error\nFailed to open map file\n"
+# define ERROR_INV_WALL "Error\nFailed to open map file\n"
+# define ERROR_INV_EXIT "Error\nInvalid number of Exits on map\n"
+# define ERROR_INV_P "Error\nInvalid number of Players on map\n"
+# define ERROR_INV_COL "Error\nThere are no collectibles on the map\n"
+# define ERROR_INV_DIM "Error\nInvalid map dimensions\n"
+# define ERROR_INV_CHAR "Error\nMap has invalid characters\n"
+# define ERROR_IMPOSS "Error\nMap impossible to complete\n"
+# define ERROR_IMG_LOAD "Error\nFailed to load images\n"
+# define ERROR_MLX "Error\nFailed to initialize minilibX\n"
+# define GAME_WON "Congratulations! You completed the game\n"
+
 typedef struct s_player
 {
 	int	x;
@@ -75,6 +91,7 @@ int		hook_handler(int keycode, t_game *game);
 void	render_player(t_game *g, char c, int x, int y);
 int		close_game(t_game *game);
 void	get_cam_pos(t_game *game);
+void	finish_game(t_game *game);
 
 //movements
 void	move_left(t_game *g);
@@ -100,7 +117,7 @@ bool	map_impossible(t_game *game);
 void	flood_fill(t_game *game, int x, int y);
 
 //handle errors and frees
-void	call_error(int error_type, t_game *game);
+void	call_error(char *str, t_game *game);
 void	free_map(t_game *game);
 void	free_all(t_game *game, int status);
 
