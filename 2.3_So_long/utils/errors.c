@@ -16,25 +16,27 @@ void	call_error(int error_type, t_game *game)
 {
 	ft_printf("Error\n");
 	if (error_type == 0)
-		perror("Failed to open map file");
+		perror("Failed to open map file\n");
 	if (error_type == 2)
-		perror("Map not fully surrounded by walls");
+		ft_printf("Map not fully surrounded by walls\n");
 	if (error_type == 3)
-		perror("Invalid number of Exits on map");
+		ft_printf("Invalid number of Exits on map\n");
 	if (error_type == 4)
-		perror("Invalid number of Players on map");
+		ft_printf("Invalid number of Players on map\n");
 	if (error_type == 5)
-		perror("There are no collectibles on the map");
+		ft_printf("There are no collectibles on the map\n");
 	if (error_type == 6)
-		perror("Invalid map dimensions");
+		ft_printf("Invalid map dimensions\n");
 	if (error_type == 7)
-		perror("Failed to allocate memory");
+		perror("Failed to allocate memory\n");
 	if (error_type == 1)
-		perror("Map impossible to complete");
+		ft_printf("Map impossible to complete\n");
 	if (error_type == 8)
-		perror("Failed to load images");
+		perror("Failed to load images\n");
 	if (error_type == 9)
-		perror("Failed to initialize minilibX");
+		perror("Failed to initialize minilibX\n");
+	if (error_type == 10)
+		ft_printf("Map has invalid characters \n");
 	free_all(game, 1);
 }
 
@@ -54,28 +56,29 @@ void	free_map(t_game *game)
 	free(game->map->cpy_map);
 	free(game->map);
 }
+
 void	free_imgs(t_game *game)
 {
 	if (game->imgs->bg)
 		mlx_destroy_image(game->mlx, game->imgs->bg);
-	if (game->imgs->collec)
-		mlx_destroy_image(game->mlx, game->imgs->collec);
-	if (game->imgs->exit_closed)
-		mlx_destroy_image(game->mlx, game->imgs->exit_closed);
-	if (game->imgs->exit_open)
-		mlx_destroy_image(game->mlx, game->imgs->exit_open);
-	if (game->imgs->p_down)
-		mlx_destroy_image(game->mlx, game->imgs->p_down);
-	if (game->imgs->p_left)
-		mlx_destroy_image(game->mlx, game->imgs->p_left);
-	if (game->imgs->p_right)
-		mlx_destroy_image(game->mlx, game->imgs->p_right);
-	if (game->imgs->p_up)
-		mlx_destroy_image(game->mlx, game->imgs->p_up);
+	if (game->imgs->item)
+		mlx_destroy_image(game->mlx, game->imgs->item);
+	if (game->imgs->exitc)
+		mlx_destroy_image(game->mlx, game->imgs->exitc);
+	if (game->imgs->exito)
+		mlx_destroy_image(game->mlx, game->imgs->exito);
+	if (game->imgs->p_s)
+		mlx_destroy_image(game->mlx, game->imgs->p_s);
+	if (game->imgs->p_a)
+		mlx_destroy_image(game->mlx, game->imgs->p_a);
+	if (game->imgs->p_d)
+		mlx_destroy_image(game->mlx, game->imgs->p_d);
+	if (game->imgs->p_w)
+		mlx_destroy_image(game->mlx, game->imgs->p_w);
 	if (game->imgs->wall)
 		mlx_destroy_image(game->mlx, game->imgs->wall);
-	if (game->imgs->p_on_exit)
-		mlx_destroy_image(game->mlx, game->imgs->p_on_exit);
+	if (game->imgs->pone)
+		mlx_destroy_image(game->mlx, game->imgs->pone);
 }
 
 void	free_all(t_game *game, int status)
@@ -90,10 +93,10 @@ void	free_all(t_game *game, int status)
 		free(game->imgs);
 		game->imgs = NULL;
 	}
-	if (game->mlx_win)
+	if (game->win)
 	{
-		mlx_destroy_window(game->mlx, game->mlx_win);
-		game->mlx_win = NULL;
+		mlx_destroy_window(game->mlx, game->win);
+		game->win = NULL;
 	}
 	if (game->mlx)
 	{

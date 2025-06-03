@@ -38,14 +38,14 @@ typedef struct s_imgs
 {
 	void	*bg;
 	void	*wall;
-	void	*p_left;
-	void	*p_up;
-	void	*p_right;
-	void	*p_down;
-	void	*exit_closed;
-	void	*exit_open;
-	void	*collec;
-	void	*p_on_exit;
+	void	*p_a;
+	void	*p_w;
+	void	*p_d;
+	void	*p_s;
+	void	*exitc;
+	void	*exito;
+	void	*item;
+	void	*pone;
 	int		h;
 	int		w;
 }				t_imgs;
@@ -53,27 +53,34 @@ typedef struct s_imgs
 typedef struct s_game
 {
 	void		*mlx;
-	void		*mlx_win;
+	void		*win;
 	t_player	*player;
 	int			total_items;
 	int			found_items;
 	t_map		*map;
 	t_imgs		*imgs;
 	int			move_count;
+	int			cy;
+	int			cx;
+	int			maxw;
+	int			maxh;
 }				t_game;
 
 //general
 void	read_map(char *map_loc, t_game *game);
 void	fix_map(t_game *game);
 void	render_map(t_game *game, char c);
+void	render_node(t_game *g, char c, int x, int y);
 int		hook_handler(int keycode, t_game *game);
-void	render_player(t_game *game, char c, int x, int y);
+void	render_player(t_game *g, char c, int x, int y);
+int		close_game(t_game *game);
+void	get_cam_pos(t_game *game);
 
 //movements
-void	move_left(t_game *game);
-void	move_up(t_game *game);
-void	move_right(t_game *game);
-void	move_down(t_game *game);
+void	move_left(t_game *g);
+void	move_up(t_game *g);
+void	move_right(t_game *g);
+void	move_down(t_game *g);
 
 //inits
 t_game	*init_game(void);

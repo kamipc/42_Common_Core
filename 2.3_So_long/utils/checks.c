@@ -12,6 +12,27 @@
 
 #include "../so_long.h"
 
+bool	invalid_char(char	**m)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (m[i])
+	{
+		j = 0;
+		while (m[i][j])
+		{
+			if (m[i][j] != '1' && m[i][j] != 'C' && m[i][j] != 'P'
+				&& m[i][j] != 'E' && m[i][j] != '0')
+				return (false);
+			j++;
+		}
+		i++;
+	}
+	return (true);
+}
+
 void	check_valid_map(t_game *game)
 {
 	if (wall_check(game->map->map) == false)
@@ -26,6 +47,8 @@ void	check_valid_map(t_game *game)
 		call_error(6, game);
 	if (map_impossible(game) == false)
 		call_error(1, game);
+	if (invalid_char(game->map->map) == false)
+		call_error(10, game);
 }
 
 void	save_map(char *map_loc, t_game *game)
@@ -45,15 +68,16 @@ void	save_map(char *map_loc, t_game *game)
 	}
 	game->map->map[i] = NULL;
 }
+
 void	validade_map_file(char	*map_loc)
 {
 	int	len;
 
 	len = ft_strlen(map_loc);
-	if (map_loc[len - 1] != 'r' || map_loc[len - 2] != 'e' 
+	if (map_loc[len - 1] != 'r' || map_loc[len - 2] != 'e'
 		|| map_loc[len - 3] != 'b' || map_loc[len - 4] != '.')
 	{
-		ft_printf("Invalid Map extension");
+		ft_printf("Error\nInvalid Map extension\n");
 		exit(1);
 	}
 }

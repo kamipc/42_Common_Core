@@ -33,13 +33,13 @@ bool	map_impossible(t_game *game)
 	i = 0;
 	while (game->map->cpy_map[i])
 	{
-		if ((ft_strchr(game->map->cpy_map[i], 'C')) 
-		|| (ft_strchr(game->map->cpy_map[i], 'P'))
-		|| (ft_strchr(game->map->cpy_map[i], 'E')))
+		if ((ft_strchr(game->map->cpy_map[i], 'C'))
+			|| (ft_strchr(game->map->cpy_map[i], 'P'))
+			|| (ft_strchr(game->map->cpy_map[i], 'E')))
 			return (false);
 		i++;
 	}
-	return(true);
+	return (true);
 }
 
 void	fix_map(t_game *game)
@@ -63,5 +63,5 @@ void	fix_map(t_game *game)
 	}
 	game->map->cpy_map[i] = NULL;
 	game->map->max_row = i;
-	game->map->max_col = s_len - 1;
+	game->map->max_col = s_len;
 }

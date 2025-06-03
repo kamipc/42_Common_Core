@@ -33,39 +33,65 @@ t_game	*init_game(void)
 		exit(1);
 	}
 	game->mlx = NULL;
-	game->mlx_win = NULL;
+	game->win = NULL;
 	game->map = NULL;
 	game->player = NULL;
 	game->found_items = 0;
 	game->total_items = 0;
 	game->imgs = NULL;
 	game->move_count = 0;
+	game->cx = 0;
+	game->cy = 0;
+	game->maxh = 0;
+	game->maxw = 0;
 	return (game);
 }
-void	init_imgs(t_game *game)
-{
-	t_imgs	*imgs;
 
-	imgs = malloc(sizeof(t_imgs));
-	if (!game)
-		call_error(7, game);
-	imgs->h = game->map->max_row * 32;
-	imgs->w = game->map->max_col * 32;
-	imgs->bg = mlx_xpm_file_to_image(game->mlx, "assets/bg.xpm", &imgs->w, &imgs->h);
-	imgs->wall = mlx_xpm_file_to_image(game->mlx, "assets/wall.xpm", &imgs->w, &imgs->h);
-	imgs->p_down = mlx_xpm_file_to_image(game->mlx, "assets/p_down.xpm", &imgs->w, &imgs->h);
-	imgs->p_left = mlx_xpm_file_to_image(game->mlx, "assets/p_left.xpm", &imgs->w, &imgs->h);
-	imgs->p_right = mlx_xpm_file_to_image(game->mlx, "assets/p_right.xpm", &imgs->w, &imgs->h);
-	imgs->p_up = mlx_xpm_file_to_image(game->mlx, "assets/p_up.xpm", &imgs->w, &imgs->h);
-	imgs->collec = mlx_xpm_file_to_image(game->mlx, "assets/collectible.xpm", &imgs->w, &imgs->h);
-	imgs->exit_closed = mlx_xpm_file_to_image(game->mlx, "assets/exit_closed.xpm", &imgs->w, &imgs->h);
-	imgs->exit_open = mlx_xpm_file_to_image(game->mlx, "assets/exit_open.xpm", &imgs->w, &imgs->h);
-	imgs->p_on_exit = mlx_xpm_file_to_image(game->mlx, "assets/p_on_exit.xpm", &imgs->w, &imgs->h);
-	if (!(imgs->bg) || !(imgs->collec) || !(imgs->exit_closed) || !(imgs->exit_open)
-		|| !(imgs->p_down) || !(imgs->p_left) || !(imgs->p_right) || !(imgs->p_up)
-		|| !(imgs->wall) || !(imgs->p_on_exit))
-		call_error(8, game);
-	game->imgs = imgs;
+void	init_imgs(t_game *g)
+{
+	t_imgs	*i;
+
+	i = malloc(sizeof(t_imgs));
+	if (!g)
+		call_error(7, g);
+	i->h = g->map->max_row * 32;
+	i->w = g->map->max_col * 32;
+	i->bg = mlx_xpm_file_to_image(g->mlx, "assets/bg.xpm", &i->w, &i->h);
+	i->wall = mlx_xpm_file_to_image(g->mlx, "assets/wall.xpm", &i->w, &i->h);
+	i->p_s = mlx_xpm_file_to_image(g->mlx, "assets/p_S.xpm", &i->w, &i->h);
+	i->p_a = mlx_xpm_file_to_image(g->mlx, "assets/p_A.xpm", &i->w, &i->h);
+	i->p_d = mlx_xpm_file_to_image(g->mlx, "assets/p_D.xpm", &i->w, &i->h);
+	i->p_w = mlx_xpm_file_to_image(g->mlx, "assets/p_W.xpm", &i->w, &i->h);
+	i->item = mlx_xpm_file_to_image(g->mlx, "assets/item.xpm", &i->w, &i->h);
+	i->exitc = mlx_xpm_file_to_image(g->mlx, "assets/exitC.xpm", &i->w, &i->h);
+	i->exito = mlx_xpm_file_to_image(g->mlx, "assets/exitO.xpm", &i->w, &i->h);
+	i->pone = mlx_xpm_file_to_image(g->mlx, "assets/PonE.xpm", &i->w, &i->h);
+	if (!(i->bg) || !(i->item) || !(i->exitc) || !(i->exito)
+		|| !(i->p_s) || !(i->p_a) || !(i->p_d) || !(i->p_w)
+		|| !(i->wall) || !(i->pone))
+		call_error(8, g);
+	g->imgs = i;
+}
+
+void	get_cam_pos(t_game *game)
+{
+	if ((game->map->max_col * 32) < game->maxw
+		&& (game->map->max_row * 32) < game->maxh)
+	{
+		game->cx = 0;
+		game->cy = 0;
+		return ;
+	}
+	game->cy = (game->player->x * 32) - (game->maxh / 2);
+	game->cx = (game->player->y * 32) - (game->maxw / 2);
+	if (game->cx < 0)
+		game->cx = 0;
+	else if (game->cx > (game->map->max_col * 32) - game->maxw)
+		game->cx = (game->map->max_col * 32) - game->maxw;
+	if (game->cy < 0)
+		game->cy = 0;
+	else if (game->cy > (game->map->max_row * 32) - game->maxh)
+		game->cy = (game->map->max_row * 32) - game->maxh;
 }
 
 void	init_mlx(t_game *game)
@@ -74,8 +100,24 @@ void	init_mlx(t_game *game)
 	if (!game->mlx)
 		call_error(9, game);
 	init_imgs(game);
-	game->mlx_win = mlx_new_window(game->mlx, game->map->max_col * 32, game->map->max_row * 32, "So_long");
-	if (!game->mlx_win)
+	mlx_get_screen_size(game->mlx, &game->maxw, &game->maxh);
+	game->maxh -= 64;
+	if ((game->map->max_col * 32) > game->maxw
+		&& (game->map->max_row * 32) > game->maxh)
+		game->win = mlx_new_window(game->mlx, game->maxw,
+				game->maxh, "So_long");
+	else if ((game->map->max_col * 32) > game->maxw
+		&& (game->map->max_row * 32) <= game->maxh)
+		game->win = mlx_new_window(game->mlx, game->maxw,
+				game->map->max_row * 32, "So_long");
+	else if ((game->map->max_col * 32) <= game->maxw
+		&& (game->map->max_row * 32) > game->maxh)
+		game->win = mlx_new_window(game->mlx, game->map->max_col * 32,
+				game->maxh, "So_long");
+	else
+		game->win = mlx_new_window(game->mlx, game->map->max_col * 32,
+				game->map->max_row * 32, "So_long");
+	if (!game->win)
 		call_error(9, game);
 	render_map(game, 'D');
 }

@@ -28,106 +28,114 @@ int	hook_handler(int keycode, t_game *game)
 	return (0);
 }
 
-void	move_left(t_game *game)
+void	move_left(t_game *g)
 {
-	if (game->map->map[game->player->x][game->player->y - 1] != '1')
+	if (g->map->map[g->player->x][g->player->y - 1] != '1')
 	{
-		game->move_count++;
-		ft_printf("%i\n", game->move_count);
-		if (game->map->map[game->player->x][game->player->y] == 'X')
-				game->map->map[game->player->x][game->player->y] = 'E';
-		else 
-			game->map->map[game->player->x][game->player->y] = '0';
-		if (game->map->map[game->player->x][game->player->y - 1] == 'C')
-		{
-			game->map->map[game->player->x][game->player->y - 1] = 'P';
-			game->found_items++;
-		}
-		else if (game->map->map[game->player->x][game->player->y - 1] == 'E' && game->found_items != game->total_items)
-			game->map->map[game->player->x][game->player->y - 1] = 'X';
-		else if (game->map->map[game->player->x][game->player->y - 1] == 'E' && game->found_items == game->total_items)
-			free_all(game, 0);
+		g->move_count++;
+		ft_printf("%i\n", g->move_count);
+		if (g->map->map[g->player->x][g->player->y] == 'X')
+			g->map->map[g->player->x][g->player->y] = 'E';
 		else
-			game->map->map[game->player->x][game->player->y - 1] = 'P';
-		game->player->y -= 1;
-		render_map(game, 'A');
+			g->map->map[g->player->x][g->player->y] = '0';
+		if (g->map->map[g->player->x][g->player->y - 1] == 'C')
+		{
+			g->map->map[g->player->x][g->player->y - 1] = 'P';
+			g->found_items++;
+		}
+		else if (g->map->map[g->player->x][g->player->y - 1] == 'E'
+			&& g->found_items != g->total_items)
+			g->map->map[g->player->x][g->player->y - 1] = 'X';
+		else if (g->map->map[g->player->x][g->player->y - 1] == 'E'
+			&& g->found_items == g->total_items)
+			free_all(g, 0);
+		else
+			g->map->map[g->player->x][g->player->y - 1] = 'P';
+		g->player->y -= 1;
+		render_map(g, 'A');
 	}
 }
 
-void	move_up(t_game *game)
+void	move_up(t_game *g)
 {
-	if (game->map->map[game->player->x - 1][game->player->y] != '1')
+	if (g->map->map[g->player->x - 1][g->player->y] != '1')
 	{
-		game->move_count++;
-		ft_printf("%i\n", game->move_count);
-		if (game->map->map[game->player->x][game->player->y] == 'X')
-				game->map->map[game->player->x][game->player->y] = 'E';
-		else 
-			game->map->map[game->player->x][game->player->y] = '0';
-		if (game->map->map[game->player->x - 1][game->player->y] == 'C')
-		{
-			game->map->map[game->player->x - 1][game->player->y] = 'P';
-			game->found_items++;
-		}
-		else if (game->map->map[game->player->x - 1][game->player->y] == 'E' && game->found_items != game->total_items)
-			game->map->map[game->player->x - 1][game->player->y] = 'X';
-		else if (game->map->map[game->player->x - 1][game->player->y] == 'E' && game->found_items == game->total_items)
-			free_all(game, 0);
+		g->move_count++;
+		ft_printf("%i\n", g->move_count);
+		if (g->map->map[g->player->x][g->player->y] == 'X')
+			g->map->map[g->player->x][g->player->y] = 'E';
 		else
-			game->map->map[game->player->x - 1][game->player->y] = 'P';
-		game->player->x -= 1;
-		render_map(game, 'W');
+			g->map->map[g->player->x][g->player->y] = '0';
+		if (g->map->map[g->player->x - 1][g->player->y] == 'C')
+		{
+			g->map->map[g->player->x - 1][g->player->y] = 'P';
+			g->found_items++;
+		}
+		else if (g->map->map[g->player->x - 1][g->player->y] == 'E'
+			&& g->found_items != g->total_items)
+			g->map->map[g->player->x - 1][g->player->y] = 'X';
+		else if (g->map->map[g->player->x - 1][g->player->y] == 'E'
+			&& g->found_items == g->total_items)
+			free_all(g, 0);
+		else
+			g->map->map[g->player->x - 1][g->player->y] = 'P';
+		g->player->x -= 1;
+		render_map(g, 'W');
 	}
 }
 
-void	move_right(t_game *game)
+void	move_right(t_game *g)
 {
-	if (game->map->map[game->player->x][game->player->y + 1] != '1')
+	if (g->map->map[g->player->x][g->player->y + 1] != '1')
 	{
-		game->move_count++;
-		ft_printf("%i\n", game->move_count);
-		if (game->map->map[game->player->x][game->player->y] == 'X')
-				game->map->map[game->player->x][game->player->y] = 'E';
-		else 
-			game->map->map[game->player->x][game->player->y] = '0';
-		if (game->map->map[game->player->x][game->player->y + 1] == 'C')
-		{
-			game->map->map[game->player->x][game->player->y + 1] = 'P';
-			game->found_items++;
-		}
-		else if (game->map->map[game->player->x][game->player->y + 1] == 'E' && game->found_items != game->total_items)
-			game->map->map[game->player->x][game->player->y + 1] = 'X';
-		else if (game->map->map[game->player->x][game->player->y + 1] == 'E' && game->found_items == game->total_items)
-			free_all(game, 0);
+		g->move_count++;
+		ft_printf("%i\n", g->move_count);
+		if (g->map->map[g->player->x][g->player->y] == 'X')
+			g->map->map[g->player->x][g->player->y] = 'E';
 		else
-			game->map->map[game->player->x][game->player->y + 1] = 'P';
-		game->player->y += 1;
-		render_map(game, 'D');
+			g->map->map[g->player->x][g->player->y] = '0';
+		if (g->map->map[g->player->x][g->player->y + 1] == 'C')
+		{
+			g->map->map[g->player->x][g->player->y + 1] = 'P';
+			g->found_items++;
+		}
+		else if (g->map->map[g->player->x][g->player->y + 1] == 'E'
+			&& g->found_items != g->total_items)
+			g->map->map[g->player->x][g->player->y + 1] = 'X';
+		else if (g->map->map[g->player->x][g->player->y + 1] == 'E'
+			&& g->found_items == g->total_items)
+			free_all(g, 0);
+		else
+			g->map->map[g->player->x][g->player->y + 1] = 'P';
+		g->player->y += 1;
+		render_map(g, 'D');
 	}
 }
 
-void	move_down(t_game *game)
+void	move_down(t_game *g)
 {
-	if (game->map->map[game->player->x + 1][game->player->y] != '1')
+	if (g->map->map[g->player->x + 1][g->player->y] != '1')
 	{
-		game->move_count++;
-		ft_printf("%i\n", game->move_count);
-		if (game->map->map[game->player->x][game->player->y] == 'X')
-				game->map->map[game->player->x][game->player->y] = 'E';
-		else 
-			game->map->map[game->player->x][game->player->y] = '0';
-		if (game->map->map[game->player->x + 1][game->player->y] == 'C')
-		{
-			game->map->map[game->player->x + 1][game->player->y] = 'P';
-			game->found_items++;
-		}
-		else if (game->map->map[game->player->x + 1][game->player->y] == 'E' && game->found_items != game->total_items)
-			game->map->map[game->player->x + 1][game->player->y] = 'X';
-		else if (game->map->map[game->player->x + 1][game->player->y] == 'E' && game->found_items == game->total_items)
-			free_all(game, 0);
+		g->move_count++;
+		ft_printf("%i\n", g->move_count);
+		if (g->map->map[g->player->x][g->player->y] == 'X')
+			g->map->map[g->player->x][g->player->y] = 'E';
 		else
-			game->map->map[game->player->x + 1][game->player->y] = 'P';
-		game->player->x += 1;
-		render_map(game, 'S');
+			g->map->map[g->player->x][g->player->y] = '0';
+		if (g->map->map[g->player->x + 1][g->player->y] == 'C')
+		{
+			g->map->map[g->player->x + 1][g->player->y] = 'P';
+			g->found_items++;
+		}
+		else if (g->map->map[g->player->x + 1][g->player->y] == 'E'
+			&& g->found_items != g->total_items)
+			g->map->map[g->player->x + 1][g->player->y] = 'X';
+		else if (g->map->map[g->player->x + 1][g->player->y] == 'E'
+			&& g->found_items == g->total_items)
+			free_all(g, 0);
+		else
+			g->map->map[g->player->x + 1][g->player->y] = 'P';
+		g->player->x += 1;
+		render_map(g, 'S');
 	}
 }
