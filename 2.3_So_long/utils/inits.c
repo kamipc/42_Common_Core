@@ -52,7 +52,7 @@ void	init_imgs(t_game *g)
 	t_imgs	*i;
 
 	i = malloc(sizeof(t_imgs));
-	if (!g)
+	if (!i)
 		call_error(ERR0R_MALLOC, g);
 	i->h = g->map->max_row * 32;
 	i->w = g->map->max_col * 32;
@@ -66,11 +66,11 @@ void	init_imgs(t_game *g)
 	i->exitc = mlx_xpm_file_to_image(g->mlx, "textures/eC.xpm", &i->w, &i->h);
 	i->exito = mlx_xpm_file_to_image(g->mlx, "textures/eO.xpm", &i->w, &i->h);
 	i->pone = mlx_xpm_file_to_image(g->mlx, "textures/PonE.xpm", &i->w, &i->h);
+	g->imgs = i;
 	if (!(i->bg) || !(i->item) || !(i->exitc) || !(i->exito)
 		|| !(i->p_s) || !(i->p_a) || !(i->p_d) || !(i->p_w)
 		|| !(i->wall) || !(i->pone))
 		call_error(ERROR_IMG_LOAD, g);
-	g->imgs = i;
 }
 
 void	get_cam_pos(t_game *game)

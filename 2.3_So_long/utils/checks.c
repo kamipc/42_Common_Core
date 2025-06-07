@@ -67,13 +67,24 @@ void	save_map(char *map_loc, t_game *game)
 		game->map->map[i] = get_next_line(map_fd);
 	}
 	game->map->map[i] = NULL;
+	if (!game->map->map[0])
+		call_error(ERROR_MAP_EMPTY, game);
 }
 
 void	validade_map_file(char	*map_loc)
 {
 	int	len;
+	int	i;
 
 	len = ft_strlen(map_loc);
+	i = 0;
+	while (map_loc[i] != '/' && map_loc[i])
+		i++;
+	if (len - (i + 1) < 5)
+	{
+		ft_printf("%s", ERROR_INV_MAP_EXT);
+		exit(1);
+	}
 	if (map_loc[len - 1] != 'r' || map_loc[len - 2] != 'e'
 		|| map_loc[len - 3] != 'b' || map_loc[len - 4] != '.')
 	{
